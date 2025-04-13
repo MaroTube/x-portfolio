@@ -4,21 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yo, It’s X</title>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://fontmeme.com/fonts/neuropol-font/" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/icons8-star.gif" type="image/gif">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Open Graph for Discord Embed -->
+    <meta property="og:title" content="Yo, It’s X">
+    <meta property="og:description" content="Maro’s cyberpunk portfolio—speed, risks, and real vibes.">
+    <meta property="og:image" content="/assets/0.jpg">
+    <meta property="og:image:width" content="1920">
+    <meta property="og:image:height" content="1080">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourusername.github.io/your-repo/">
     <style>
         :root {
-            --bg-color: #0F0F0F;
-            --text-color: #D9D9D9;
-            --accent-color: #FF1A1A;
-            --accent-secondary: #6A0DAD;
-            --card-bg: linear-gradient(135deg, #1F0A0A, #0F0F0F);
+            --bg-color: #0A0A0A;
+            --text-color: #E0FFFF;
+            --accent-color: #00FFFF; /* Neon Cyan */
+            --accent-secondary: #FF00FF; /* Neon Pink */
+            --card-bg: rgba(20, 20, 30, 0.8);
+            --glow: 0 0 8px #00FFFF, 0 0 12px #FF00FF;
         }
         body.light-mode {
-            --bg-color: #E6E6E6;
-            --text-color: #1A1A1A;
-            --card-bg: linear-gradient(135deg, #F5F5F5, #D9D9D9);
+            --bg-color: #F5F5F5;
+            --text-color: #1C2526;
+            --accent-color: #008080; /* Dark Teal */
+            --accent-secondary: #800080; /* Vibrant Purple */
+            --card-bg: rgba(245, 245, 245, 0.9);
+            --glow: 0 0 8px #008080, 0 0 12px #800080;
         }
         * {
             margin: 0;
@@ -26,32 +41,86 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Exo 2', sans-serif;
+            font-family: 'Rajdhani', sans-serif;
             background: var(--bg-color);
             color: var(--text-color);
-            line-height: 1.4;
-            animation: cyberFade 1.2s ease-out;
-            overflow: hidden; /* Prevent scroll during intro */
-            cursor: none; /* Hide default cursor */
+            line-height: 1.6;
+            animation: cyberFade 1.5s ease-out;
+            cursor: none;
+            transition: background 0.5s ease, color 0.5s ease;
+            position: relative;
+            min-height: 100vh;
+        }
+        body.transition {
+            animation: modeTransition 0.6s ease;
+        }
+        /* Scanline Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent 50%, rgba(255, 255, 255, 0.02) 50%, transparent 51%);
+            background-size: 100% 4px;
+            z-index: -2;
+            animation: scanline 4s linear infinite;
         }
         #custom-cursor {
             position: fixed;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--accent-color);
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--accent-color);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             transition: transform 0.1s ease;
-            animation: pulseCursor 1s infinite;
+            animation: pulseCursor 0.8s infinite;
         }
         @keyframes pulseCursor {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.2); opacity: 1; }
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
         }
         @keyframes cyberFade {
-            0% { opacity: 0; filter: blur(5px); }
+            0% { opacity: 0; filter: blur(8px); }
             100% { opacity: 1; filter: blur(0); }
+        }
+        @keyframes modeTransition {
+            0% { opacity: 0.4; transform: scale(0.97); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            transition: opacity 0.6s ease;
+        }
+        #loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loader {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            color: var(--accent-color);
+            text-shadow: var(--glow);
+            animation: glitchText 0.8s infinite, fadeInOut 1.5s infinite;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
         #intro-overlay {
             position: fixed;
@@ -64,24 +133,30 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease;
         }
         #intro-overlay.hidden {
             opacity: 0;
             pointer-events: none;
         }
         #intro-overlay h1 {
-            font-family: 'Neuropol', sans-serif;
-            font-size: 3em;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5em;
             color: var(--accent-color);
-            text-shadow: 0 0 15px var(--accent-secondary);
+            text-shadow: var(--glow);
             cursor: pointer;
-            animation: glitchText 2s infinite;
+            animation: glitchText 1.5s infinite;
+        }
+        @keyframes glitchText {
+            0%, 100% { text-shadow: var(--glow); }
+            50% { text-shadow: 2px 2px 10px var(--accent-secondary), -2px -2px 10px var(--accent-color); }
         }
         #particles-js {
             position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            min-height: 100vh;
+            height: 100%;
             z-index: -1;
             background: var(--bg-color);
         }
@@ -89,146 +164,203 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: var(--card-bg);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
             text-align: center;
-            padding: 10px 0;
+            padding: 12px 0;
             z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+            border-bottom: 2px solid var(--accent-color);
+            box-shadow: var(--glow);
         }
         nav a, nav button {
-            font-family: 'Neuropol', sans-serif;
+            position: relative;
+            font-family: 'Orbitron', sans-serif;
             color: var(--text-color);
             text-decoration: none;
-            margin: 0 12px;
+            margin: 0 18px;
             font-size: 1.2em;
-            transition: color 0.2s, text-shadow 0.2s;
+            padding-bottom: 6px;
+            text-shadow: var(--glow);
+            transition: color 0.3s, transform 0.3s;
         }
         nav button {
             background: none;
             border: none;
             cursor: none;
         }
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+            transition: width 0.2s ease;
+        }
+        nav a:hover::after {
+            width: 100%;
+        }
         nav a:hover, nav button:hover {
-            color: var(--accent-color);
-            text-shadow: 0 0 8px var(--accent-color);
+            color: var(--accent-secondary);
+            transform: translateY(-2px) scale(1.05);
+            text-shadow: 0 0 12px var(--accent-secondary);
+            animation: flicker 0.2s infinite;
+        }
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; }
         }
         section {
-            min-height: 90vh;
-            padding: 80px 15px 15px;
+            min-height: 100vh;
+            padding: 120px 20px 20px;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+            animation: cyberSlide 0.8s ease-out;
+        }
+        @keyframes cyberSlide {
+            0% { opacity: 0; transform: translateY(50px); filter: blur(5px); }
+            50% { opacity: 0.5; filter: blur(2px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
         h2 {
-            font-family: 'Neuropol', sans-serif;
-            font-size: 3.2em;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5em;
             color: var(--accent-color);
-            margin-bottom: 12px;
-            text-shadow: 0 0 10px var(--accent-secondary);
-            animation: glitchText 2s infinite;
+            margin-bottom: 15px;
+            text-shadow: var(--glow);
+            animation: glitchText 1.8s infinite;
         }
         h2.glitch {
-            animation: glitchTransition 0.5s;
+            animation: glitchShake 0.4s ease;
         }
-        @keyframes glitchText {
-            0%, 100% { text-shadow: 0 0 10px var(--accent-color); }
-            50% { text-shadow: 2px 2px 10px var(--accent-secondary); }
-        }
-        @keyframes glitchTransition {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(-5px); filter: hue-rotate(90deg); }
-            40% { transform: translateX(5px); filter: hue-rotate(-90deg); }
-            60% { transform: translateX(-3px); }
-            80% { transform: translateX(3px); }
-            100% { transform: translateX(0); }
+        @keyframes glitchShake {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(5deg); filter: hue-rotate(90deg); }
+            40% { transform: skew(-5deg); filter: hue-rotate(-90deg); }
+            60% { transform: skew(3deg); }
+            80% { transform: skew(-3deg); }
+            100% { transform: skew(0deg); }
         }
         p {
-            font-size: 1.1em;
-            max-width: 600px;
-            margin: 0 auto 8px;
+            font-size: 1.3em;
+            max-width: 650px;
+            margin: 0 auto 10px;
+            line-height: 1.7;
+            text-shadow: 0 0 4px var(--text-color);
         }
         .widget {
-            margin-top: 15px;
+            margin-top: 20px;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             background: var(--card-bg);
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid var(--accent-secondary);
-            box-shadow: 0 0 10px rgba(106, 13, 173, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
-            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            box-shadow: var(--glow);
+            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
         }
         .widget:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 12px var(--accent-color);
-            border-color: var(--accent-color);
-            animation: pulseBorder 1s infinite;
+            transform: scale(1.03) translateY(-5px);
+            box-shadow: 0 0 20px var(--accent-color), 0 0 30px var(--accent-secondary);
+            border: 2px solid var(--accent-color);
+            animation: glitchShake 0.3s;
         }
-        @keyframes pulseBorder {
-            0%, 100% { border-color: var(--accent-secondary); }
-            50% { border-color: var(--accent-color); }
+        .widget:hover::before {
+            opacity: 0.1;
         }
         .intro-card {
-            animation: fadeIn 0.8s ease-out;
+            animation: fadeIn 1s ease-out;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .pfp {
-            width: 140px;
-            height: 140px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
-            border: 3px solid var(--accent-color);
-            box-shadow: 0 0 12px var(--accent-color);
-            transition: transform 0.3s;
+            border: 4px solid var(--accent-color);
+            box-shadow: var(--glow);
+            transition: transform 0.4s, box-shadow 0.4s;
         }
         .pfp:hover {
-            transform: scale(1.1);
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 0 20px var(--accent-secondary);
         }
         .pfp-name {
-            font-family: 'Neuropol', sans-serif;
-            font-size: 1.8em;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
             color: var(--accent-color);
-            margin-top: 8px;
+            margin-top: 10px;
+            text-shadow: var(--glow);
         }
         .mood-setter button {
-            background: var(--accent-color);
+            background: linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
             color: var(--text-color);
             border: none;
-            padding: 8px 16px;
-            margin: 4px;
+            padding: 10px 20px;
+            margin: 6px;
             cursor: none;
-            font-family: 'Neuropol', sans-serif;
-            transition: background 0.2s, transform 0.2s;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1em;
+            border-radius: 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-shadow: 0 0 4px var(--text-color);
         }
         .mood-setter button:hover {
-            background: var(--accent-secondary);
-            transform: scale(1.05);
+            transform: scale(1.1);
+            box-shadow: var(--glow);
+            animation: flicker 0.2s infinite;
         }
         #mood-result {
-            margin-top: 8px;
-            font-size: 1.1em;
+            margin-top: 10px;
+            font-size: 1.2em;
             opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s, transform 0.4s;
+            transform: translateY(15px);
+            transition: opacity 0.5s, transform 0.5s;
+            text-shadow: var(--glow);
         }
         #mood-result.show {
             opacity: 1;
             transform: translateY(0);
         }
         .timeline div {
-            background: var(--bg-color);
-            padding: 10px;
-            border-radius: 5px;
-            margin: 6px 0;
+            background: var(--card-bg);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 8px 0;
             opacity: 0;
-            transform: translateX(-10px);
-            transition: opacity 0.4s, transform 0.4s;
+            transform: translateX(-20px);
+            transition: opacity 0.5s, transform 0.5s;
+            box-shadow: var(--glow);
         }
         .timeline div.visible {
             opacity: 1;
@@ -236,155 +368,174 @@
         }
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            padding: 10px;
-        }
-        .skill-item span {
-            font-family: 'Neuropol', sans-serif;
-            font-size: 1em;
-            color: var(--accent-color);
-        }
-        .skill-bar {
-            height: 5px;
-            background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
-            border-radius: 2px;
-            transition: width 1s ease-in-out;
-        }
-        .skill-percent {
-            font-size: 0.8em;
-            margin-top: 3px;
-        }
-        .hobby-grid, .project-grid, .crew-grid, .mentions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 12px;
             padding: 12px;
         }
+        .skill-item span {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1em;
+            color: var(--accent-color);
+            text-shadow: var(--glow);
+        }
+        .skill-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+            border-radius: 3px;
+            transition: width 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .skill-percent {
+            font-size: 0.9em;
+            margin-top: 4px;
+            text-shadow: 0 0 4px var(--text-color);
+        }
+        .hobby-grid, .project-grid, .crew-grid, .mentions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 15px;
+        }
         .hobby-card, .project-card, .crew-card, .mention-card {
-            background: var(--bg-color);
-            padding: 10px;
-            border-radius: 5px;
+            background: var(--card-bg);
+            padding: 12px;
+            border-radius: 8px;
             position: relative;
-            transition: transform 0.2s;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            box-shadow: var(--glow);
+        }
+        .hobby-card i, .project-card i, .crew-card i, .mention-card i {
+            font-size: 1.8em;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            text-shadow: var(--glow);
         }
         .hobby-card:hover, .project-card:hover, .crew-card:hover, .mention-card:hover {
-            transform: scale(1.05);
-        }
-        .hobby-card:hover::after, .project-card:hover::after, .crew-card:hover::after, .mention-card:hover::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(255, 26, 26, 0.2), rgba(106, 13, 173, 0.2));
-            animation: scanline 2s infinite;
-            z-index: 1;
-        }
-        @keyframes scanline {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 100%; }
-            background: linear-gradient(transparent 50%, rgba(255, 255, 255, 0.1) 50%, transparent 51%);
-            background-size: 100% 4px;
+            transform: scale(1.08) rotate(2deg);
+            box-shadow: 0 0 20px var(--accent-secondary);
         }
         .project-card h3 {
-            font-family: 'Neuropol', sans-serif;
-            font-size: 1.2em;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3em;
             color: var(--accent-color);
-            margin: 5px 0;
+            margin: 8px 0;
+            text-shadow: var(--glow);
         }
         .code-list {
             text-align: center;
             width: 100%;
         }
         .code-list p {
-            font-size: 1.1em;
-            margin: 10px auto;
+            font-size: 1.2em;
+            margin: 12px auto;
             padding: 0;
             width: 100%;
             text-align: center;
-            text-shadow: 0 0 5px rgba(255, 26, 26, 0.5);
+            text-shadow: var(--glow);
             cursor: pointer;
             opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s, transform 0.4s;
+            transform: translateY(15px);
+            transition: opacity 0.5s, transform 0.5s;
         }
         .code-list p.visible {
             opacity: 1;
             transform: translateY(0);
         }
         .code-list p:hover {
-            color: var(--accent-color);
-            text-shadow: 0 0 10px var(--accent-color);
-            animation: neonFlicker 0.5s infinite;
-        }
-        @keyframes neonFlicker {
-            0%, 100% { text-shadow: 0 0 10px var(--accent-color); }
-            50% { text-shadow: 0 0 15px var(--accent-secondary); }
+            color: var(--accent-secondary);
+            text-shadow: 0 0 12px var(--accent-secondary);
+            animation: flicker 0.2s infinite;
         }
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            padding: 10px;
+            gap: 12px;
+            padding: 12px;
         }
         .social-links a {
-            font-size: 1.6em;
+            font-size: 2em;
             color: var(--text-color);
-            transition: transform 0.2s, color 0.2s;
+            transition: transform 0.3s, color 0.3s;
+            text-shadow: var(--glow);
         }
         .social-links a:hover {
-            color: var(--accent-color);
-            transform: rotate(10deg);
+            color: var(--accent-secondary);
+            transform: scale(1.2) rotate(15deg);
+            text-shadow: 0 0 12px var(--accent-secondary);
         }
         footer {
-            padding: 10px;
+            padding: 12px;
             background: var(--bg-color);
             text-align: center;
-            font-size: 0.8em;
+            font-size: 0.9em;
+            text-shadow: 0 0 4px var(--text-color);
         }
         footer a {
             color: var(--accent-color);
             text-decoration: none;
+            text-shadow: var(--glow);
         }
         #audio-visualizer {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 30px;
-            background: rgba(0, 0, 0, 0.8);
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 100;
+            box-shadow: var(--glow);
+            animation: pulseVisualizer 1.5s infinite;
+        }
+        @keyframes pulseVisualizer {
+            0%, 100% { border-color: var(--accent-color); }
+            50% { border-color: var(--accent-secondary); }
         }
         .visualizer-bar {
-            width: 4px;
-            height: 20px;
-            background: var(--accent-color);
-            margin: 0 2px;
-            transition: height 0.1s ease;
+            width: 40px;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+            margin: 3px 0;
+            border-radius: 2px;
+            transition: width 0.05s ease;
+        }
+        .cyber-clock {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3em;
+            text-shadow: var(--glow);
         }
         @media (max-width: 768px) {
-            nav a, nav button { font-size: 1em; margin: 0 6px; }
-            h2 { font-size: 2.5em; }
+            nav a, nav button { font-size: 1em; margin: 0 8px; }
+            h2 { font-size: 2.8em; }
             .hobby-grid, .project-grid, .crew-grid, .mentions-grid { grid-template-columns: 1fr; }
-            #intro-overlay h1 { font-size: 2em; }
+            #intro-overlay h1 { font-size: 2.5em; }
+            #audio-visualizer { width: 40px; height: 200px; }
+            .visualizer-bar { width: 30px; }
+            section { padding: 80px 15px 15px; }
         }
         @media (max-width: 480px) {
-            nav { padding: 6px 0; }
+            nav { padding: 8px 0; }
             section { padding: 60px 10px 10px; }
-            h2 { font-size: 2em; }
-            .pfp { width: 100px; height: 100px; }
-            #intro-overlay h1 { font-size: 1.5em; }
+            h2 { font-size: 2.2em; }
+            .pfp { width: 120px; height: 120px; }
+            #intro-overlay h1 { font-size: 1.8em; }
+            .widget { padding: 15px; }
         }
     </style>
 </head>
 <body>
     <!-- Custom Cursor -->
     <div id="custom-cursor"></div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader">Initializing X...</div>
+    </div>
 
     <!-- Intro Overlay -->
     <div id="intro-overlay">
@@ -393,7 +544,7 @@
 
     <!-- Audio -->
     <audio id="bg-music" loop>
-        <source src="./assets/audio/track.mp3" type="audio/mpeg">
+        <source src="/assets/audio/track.mp3" type="audio/mpeg">
     </audio>
     <audio id="hover-sound">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-short-glitch-2191.mp3" type="audio/mpeg">
@@ -406,9 +557,7 @@
     <div id="particles-js"></div>
 
     <!-- Audio Visualizer -->
-    <div id="audio-visualizer">
-        <!-- Bars will be generated by JavaScript -->
-    </div>
+    <div id="audio-visualizer"></div>
 
     <!-- Navigation -->
     <nav>
@@ -427,7 +576,7 @@
 
     <!-- Intro -->
     <section id="intro" class="animate">
-        <h2>Yo, It’s X</h2>
+        <h2><i class="fas fa-user"></i> Yo, It’s X</h2>
         <div class="pfp-container">
             <img class="pfp" src="https://raw.githubusercontent.com/MaroTube/x-portfolio/refs/heads/main/assets/New%20Project.jpg" alt="Maro (X)">
             <div class="pfp-name">Maro (X)</div>
@@ -440,7 +589,7 @@
 
     <!-- Home -->
     <section id="home" class="animate">
-        <h2>X, Unlocked</h2>
+        <h2><i class="fas fa-home"></i> X, Unlocked</h2>
         <p>I move fast, live loud, there's nothing such as limits. Oh and talking about dares? I’m in.</p>
         <div class="widget mood-setter">
             <p>What’s my mode?</p>
@@ -450,11 +599,14 @@
             <button onclick="setMood('chaos')">Go Wild</button>
             <p id="mood-result"></p>
         </div>
+        <div class="widget cyber-clock">
+            <p>Current Vibe Time: <span id="cyber-clock">00:00:00</span></p>
+        </div>
     </section>
 
     <!-- About -->
     <section id="about" class="animate">
-        <h2>My Deal</h2>
+        <h2><i class="fas fa-info-circle"></i> My Deal</h2>
         <p>I’m that dude who hacks life with tech and tears up the streets. No fake vibes.</p>
         <div class="widget timeline">
             <div>2019: Got into psychology a little.</div>
@@ -466,7 +618,7 @@
 
     <!-- Skills -->
     <section id="skills" class="animate">
-        <h2>What I Bring</h2>
+        <h2><i class="fas fa-bolt"></i> What I Bring</h2>
         <p>I got skills that slap—check the stats.</p>
         <div class="widget skills-grid">
             <div class="skill-item" data-percent="90">
@@ -519,51 +671,23 @@
 
     <!-- Hobbies -->
     <section id="hobbies" class="animate">
-        <h2>My Jams</h2>
+        <h2><i class="fas fa-heart"></i> My Jams</h2>
         <p>I stay moving—bikes, cars, courts. Name it, I’m on it.</p>
         <div class="widget hobby-grid">
-            <div class="hobby-card">
-                <p>BMX</p>
-            </div>
-            <div class="hobby-card">
-                <p>Drifting</p>
-            </div>
-            <div class="hobby-card">
-                <p>Parkour</p>
-            </div>
-            <div class="hobby-card">
-                <p>Basketball</p>
-            </div>
-            <div class="hobby-card">
-                <p>Hobby 1</p>
-            </div>
-            <div class="hobby-card">
-                <p>Hobby 2</p>
-            </div>
-            <div class="hobby-card">
-                <p>Hobby 3</p>
-            </div>
-            <div class="hobby-card">
-                <p>Hobby 4</p>
-            </div>
-            <div class="hobby-card">
-                <p>Hobby 5</p>
-            </div>
-            <div class="hobby-card">
-                <p>Hobby 6</p>
-            </div>
-            <div class="hobby-card">
-                <p>Hobby 7</p>
-            </div>
-            <div class="hobby-card">
-                <p>Hobby 8</p>
-            </div>
+            <div class="hobby-card"><i class="fas fa-bicycle"></i><p>BMX</p></div>
+            <div class="hobby-card"><i class="fas fa-car"></i><p>Drifting</p></div>
+            <div class="hobby-card"><i class="fas fa-running"></i><p>Parkour</p></div>
+            <div class="hobby-card"><i class="fas fa-basketball-ball"></i><p>Basketball</p></div>
+            <div class="hobby-card"><i class="fas fa-gamepad"></i><p>Gaming</p></div>
+            <div class="hobby-card"><i class="fas fa-paint-brush"></i><p>Street Art</p></div>
+            <div class="hobby-card"><i class="fas fa-utensils"></i><p>Cooking</p></div>
+            <div class="hobby-card"><i class="fas fa-music"></i><p>Music</p></div>
         </div>
     </section>
 
     <!-- Code -->
     <section id="code" class="animate">
-        <h2>My Rules</h2>
+        <h2><i class="fas fa-code"></i> My Rules</h2>
         <p>I live raw—my code keeps it 100.</p>
         <div class="widget code-list">
             <p>No Apologies: I’m me, deal with it.</p>
@@ -575,74 +699,44 @@
 
     <!-- Projects -->
     <section id="projects" class="animate">
-        <h2>My Builds</h2>
+        <h2><i class="fas fa-project-diagram"></i> My Builds</h2>
         <p>I make shit that pops off—more coming.</p>
         <div class="widget project-grid">
-            <div class="project-card">
-                <h3>Project X1</h3>
-                <p>Straight-up wild code.</p>
-            </div>
-            <div class="project-card">
-                <h3>Project X2</h3>
-                <p>Next-level heat.</p>
-            </div>
-            <div class="project-card">
-                <h3>Project X3</h3>
-                <p>Still a banger.</p>
-            </div>
-            <div class="project-card">
-                <h3>Project X4</h3>
-                <p>Fresh as fuck.</p>
-            </div>
+            <div class="project-card"><i class="fas fa-rocket"></i><h3>Project X1</h3><p>Straight-up wild code.</p></div>
+            <div class="project-card"><i class="fas fa-fire"></i><h3>Project X2</h3><p>Next-level heat.</p></div>
+            <div class="project-card"><i class="fas fa-star"></i><h3>Project X3</h3><p>Still a banger.</p></div>
+            <div class="project-card"><i class="fas fa-bolt"></i><h3>Project X4</h3><p>Fresh as fuck.</p></div>
         </div>
     </section>
 
     <!-- Crew -->
     <section id="crew" class="animate">
-        <h2>My Squad</h2>
+        <h2><i class="fas fa-users"></i> My Squad</h2>
         <p>Only the realest ride with me.</p>
         <div class="widget crew-grid">
-            <div class="crew-card">
-                <p>K - The co leader</p>
-            </div>
-            <div class="crew-card">
-                <p>O - a menace in fights</p>
-            </div>
-            <div class="crew-card">
-                <p>T - The guy</p>
-            </div>
-            <div class="crew-card">
-                <p>X - I take the lead</p>
-            </div>
+            <div class="crew-card"><i class="fas fa-user-shield"></i><p>K - The co leader</p></div>
+            <div class="crew-card"><i class="fas fa-fist-raised"></i><p>O - a menace in fights</p></div>
+            <div class="crew-card"><i class="fas fa-user-star"></i><p>T - The guy</p></div>
+            <div class="crew-card"><i class="fas fa-user-ninja"></i><p>X - I take the lead</p></div>
         </div>
     </section>
 
     <!-- Honorable Mentions -->
     <section id="mentions" class="animate">
-        <h2>Big Ups</h2>
+        <h2><i class="fas fa-trophy"></i> Big Ups</h2>
         <p>My day ones—respect always.</p>
         <div class="widget mentions-grid">
-            <div class="mention-card">
-                <p>Cinnamon - ilysm <3</p>
-            </div>
-            <div class="mention-card">
-                <p>Lidia - :3</p>
-            </div>
-            <div class="mention-card">
-                <p>Alexandros - aka greece cheese</p>
-            </div>
-            <div class="mention-card">
-                <p>Sami - Parkour goat</p>
-            </div>
-            <div class="mention-card">
-                <p>Hassan - Beat plug</p>
-            </div>
+            <div class="mention-card"><i class="fas fa-heart"></i><p>Cinnamon - ilysm <3</p></div>
+            <div class="mention-card"><i class="fas fa-smile"></i><p>Lidia - :3</p></div>
+            <div class="mention-card"><i class="fas fa-cheese"></i><p>Alexandros - aka greece cheese</p></div>
+            <div class="mention-card"><i class="fas fa-running"></i><p>Sami - Parkour goat</p></div>
+            <div class="mention-card"><i class="fas fa-music"></i><p>Hassan - Beat plug</p></div>
         </div>
     </section>
 
     <!-- Links -->
     <section id="links" class="animate">
-        <h2>Link Up</h2>
+        <h2><i class="fas fa-link"></i> Link Up</h2>
         <p>Yo, slide in—let’s connect.</p>
         <div class="widget social-links">
             <a href="https://discord.com" target="_blank" aria-label="Discord"><i class="fab fa-discord"></i></a>
@@ -656,6 +750,7 @@
     <!-- Footer -->
     <footer>
         <p>X’s World | <a href="#" onclick="easterEgg()">You real?</a></p>
+        <p>Credits: Music by CyberBeats | Design by Maro | Code by X</p>
     </footer>
 
     <!-- Scripts -->
@@ -664,8 +759,16 @@
         // Custom Cursor
         const cursor = document.getElementById('custom-cursor');
         document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX - 10 + 'px';
-            cursor.style.top = e.clientY - 10 + 'px';
+            cursor.style.left = e.clientX - 12 + 'px';
+            cursor.style.top = e.clientY - 12 + 'px';
+        });
+
+        // Loading Screen
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+            }, 2000);
         });
 
         // Intro Overlay
@@ -680,52 +783,55 @@
         // Dark/Light Mode
         const toggle = document.getElementById('mode-toggle');
         toggle.addEventListener('click', () => {
+            document.body.classList.add('transition');
             document.body.classList.toggle('light-mode');
             toggle.innerHTML = document.body.classList.contains('light-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            setTimeout(() => document.body.classList.remove('transition'), 600);
         });
 
         // Music & Audio Visualizer
         const bgMusic = document.getElementById('bg-music');
-        bgMusic.volume = 0.4;
+        bgMusic.volume = 0.5;
         let analyser, dataArray;
         function initAudio() {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const source = audioCtx.createMediaElementSource(bgMusic);
-            analyser = audioCtx.createAnalyser();
-            analyser.fftSize = 256;
-            source.connect(analyser);
-            analyser.connect(audioCtx.destination);
-
-            const bufferLength = analyser.frequencyBinCount;
-            dataArray = new Uint8Array(bufferLength);
-
-            // Audio Visualizer
-            const visualizer = document.getElementById('audio-visualizer');
-            for (let i = 0; i < 20; i++) {
-                const bar = document.createElement('div');
-                bar.className = 'visualizer-bar';
-                visualizer.appendChild(bar);
-            }
-
-            function updateVisualizer() {
-                analyser.getByteFrequencyData(dataArray);
-                const bars = document.querySelectorAll('.visualizer-bar');
-                for (let i = 0; i < bars.length; i++) {
-                    const value = dataArray[i * 2] / 255 * 20;
-                    bars[i].style.height = value + 'px';
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioCtx.createMediaElementSource(bgMusic);
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 256;
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+                const visualizer = document.getElementById('audio-visualizer');
+                for (let i = 0; i < 20; i++) {
+                    const bar = document.createElement('div');
+                    bar.className = 'visualizer-bar';
+                    visualizer.appendChild(bar);
                 }
-                requestAnimationFrame(updateVisualizer);
+                function updateVisualizer() {
+                    analyser.getByteFrequencyData(dataArray);
+                    const bars = document.querySelectorAll('.visualizer-bar');
+                    for (let i = 0; i < bars.length; i++) {
+                        const value = dataArray[i * 2] / 255 * 60;
+                        bars[i].style.width = Math.max(10, value) + 'px';
+                    }
+                    requestAnimationFrame(updateVisualizer);
+                }
+                updateVisualizer();
+            } catch (e) {
+                console.error('AudioContext failed:', e);
+                document.getElementById('audio-visualizer').style.display = 'none';
             }
-            updateVisualizer();
         }
 
         // Sound Effects
         const hoverSound = document.getElementById('hover-sound');
         const clickSound = document.getElementById('click-sound');
         function playSound(sound) {
-            bgMusic.volume = 0.2;
+            bgMusic.volume = 0.3;
             sound.play();
-            sound.addEventListener('ended', () => bgMusic.volume = 0.4, { once: true });
+            sound.addEventListener('ended', () => bgMusic.volume = 0.5, { once: true });
         }
         document.querySelectorAll('button, a, .project-card, .crew-card, .hobby-card, .skill-item span, .code-list p, .mention-card').forEach(el => {
             el.addEventListener('mouseenter', () => playSound(hoverSound));
@@ -735,13 +841,19 @@
         // Particles
         particlesJS("particles-js", {
             particles: {
-                number: { value: 100, density: { enable: true, value_area: 800 } },
-                color: { value: ["#D9D9D9", "#FF1A1A", "#6A0DAD"] },
-                shape: { type: ["circle", "triangle"] },
-                opacity: { value: 0.6, random: true },
-                size: { value: 2.5, random: true },
-                line_linked: { enable: true, distance: 100, color: "#FF1A1A", opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 5, direction: "none", random: true }
+                number: { value: 80, density: { enable: true, value_area: 1000 } },
+                color: { value: ["#00FFFF", "#FF00FF", "#E0FFFF"] },
+                shape: { type: ["circle", "triangle", "star"] },
+                opacity: { value: 0.8, random: true },
+                size: { value: 8, random: { enable: true, minimumValue: 5 } },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#00FFFF",
+                    opacity: 0.6,
+                    width: 2
+                },
+                move: { enable: true, speed: 6, direction: "none", random: true }
             },
             interactivity: {
                 events: {
@@ -749,7 +861,8 @@
                     onclick: { enable: true, mode: "push" }
                 },
                 modes: {
-                    grab: { distance: 100, line_linked: { opacity: 1 } }
+                    grab: { distance: 150, line_linked: { opacity: 0.8 } },
+                    push: { particles_nb: 3 }
                 }
             }
         });
@@ -780,15 +893,14 @@
                     }
                     if (entry.target.id === 'about') {
                         document.querySelectorAll('.timeline div').forEach((div, index) => {
-                            setTimeout(() => div.classList.add('visible'), index * 150);
+                            setTimeout(() => div.classList.add('visible'), index * 200);
                         });
                     }
                     if (entry.target.id === 'code') {
                         document.querySelectorAll('.code-list p').forEach((p, index) => {
-                            setTimeout(() => p.classList.add('visible'), index * 150);
+                            setTimeout(() => p.classList.add('visible'), index * 200);
                         });
                     }
-                    // Typewriter for h2
                     const h2 = entry.target.querySelector('h2');
                     if (h2 && !h2.dataset.typed) {
                         const text = h2.textContent;
@@ -799,14 +911,14 @@
                             if (i < text.length) {
                                 h2.textContent += text.charAt(i);
                                 i++;
-                                setTimeout(type, 50);
+                                setTimeout(type, 40);
                             }
                         };
                         type();
                     }
                 }
             });
-        }, { threshold: 0.4 });
+        }, { threshold: 0.3 });
         animates.forEach(el => observer.observe(el));
 
         // Mood Setter
@@ -825,22 +937,79 @@
 
         // Typewriter Effect for Intro
         const introText = document.getElementById('intro-text');
-        const text = introText.textContent;
+        const introTextContent = introText.textContent;
         introText.textContent = '';
         let i = 0;
         function typeWriter() {
-            if (i < text.length) {
-                introText.textContent += text.charAt(i);
+            if (i < introTextContent.length) {
+                introText.textContent += introTextContent.charAt(i);
                 i++;
-                setTimeout(typeWriter, 50);
+                setTimeout(typeWriter, 40);
             }
         }
         typeWriter();
+
+        // Cyber Clock
+        function updateClock() {
+            const clock = document.getElementById('cyber-clock');
+            const now = new Date();
+            clock.textContent = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Title Typewriter
+        function typeTitle() {
+            const text = "akxcco";
+            let i = 0;
+            let forward = true;
+            function update() {
+                if (forward) {
+                    document.title = text.slice(0, i + 1);
+                    i++;
+                    if (i >= text.length) forward = false;
+                } else {
+                    document.title = text.slice(0, i);
+                    i--;
+                    if (i < 0) {
+                        forward = true;
+                        i = 0;
+                    }
+                }
+                setTimeout(update, forward ? 180 : 90);
+            }
+            update();
+        }
+        typeTitle();
 
         // Easter Egg
         function easterEgg() {
             alert("You tryna vibe my boy? —X, 2025");
         }
-    </script>
+
+        // Widget Click Ripple
+        document.querySelectorAll('.widget').forEach(widget => {
+            widget.addEventListener('click', e => {
+                const ripple = document.createElement('span');
+                ripple.style.position = 'absolute';
+                ripple.style.background = 'radial-gradient(circle, var(--accent-color) 10%, transparent 70%)';
+                ripple.style.width = '100px';
+                ripple.style.height = '100px';
+                ripple.style.left = `${e.offsetX - 50}px`;
+                ripple.style.top = `${e.offsetY - 50}px`;
+                ripple.style.borderRadius = '50%';
+                ripple.style.pointerEvents = 'none';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+                widget.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+        </script>
+        <style>
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 0.5; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+    </style>
 </body>
 </html>

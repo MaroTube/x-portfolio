@@ -4,203 +4,227 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yo, It’s X</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fontmeme.com/fonts/neuropol-font/" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Dark and Light Mode Colors */
+        :root {
+            --bg-color: #0F0F0F;
+            --text-color: #D9D9D9;
+            --accent-color: #FF1A1A;
+            --accent-secondary: #6A0DAD;
+            --card-bg: linear-gradient(135deg, #1F0A0A, #0F0F0F);
+        }
+        body.light-mode {
+            --bg-color: #E6E6E6;
+            --text-color: #1A1A1A;
+            --accent-color: #FF1A1A;
+            --accent-secondary: #6A0DAD;
+            --card-bg: linear-gradient(135deg, #F5F5F5, #D9D9D9);
+        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: #1A1A1A;
-            color: #E0E0E0;
+            font-family: 'Exo 2', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
             overflow-x: hidden;
-            line-height: 1.5;
-            animation: launchPulse 1.5s ease-in-out;
+            line-height: 1.4;
+            animation: cyberFade 1.2s ease-out;
         }
-        @keyframes launchPulse {
-            0% { opacity: 0; transform: scale(0.98); }
-            50% { opacity: 0.7; transform: scale(1.02); }
-            100% { opacity: 1; transform: scale(1); }
+        @keyframes cyberFade {
+            0% { opacity: 0; filter: blur(5px); }
+            50% { opacity: 0.5; filter: blur(2px); box-shadow: 0 0 20px var(--accent-color); }
+            100% { opacity: 1; filter: blur(0); box-shadow: none; }
         }
         #particles-js {
             position: fixed;
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             z-index: -1;
-            background: #1A1A1A;
+            background: var(--bg-color);
+            background-size: cover;
+            background-attachment: fixed;
         }
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: linear-gradient(180deg, #1A1A1A, #2A0A0A);
+            background: var(--card-bg);
             text-align: center;
-            padding: 15px 0;
+            padding: 12px 0;
             z-index: 100;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
         }
-        nav a {
-            font-family: 'Orbitron', sans-serif;
-            color: #E0E0E0;
+        nav a, nav button {
+            font-family: 'Neuropol', sans-serif;
+            color: var(--text-color);
             text-decoration: none;
-            margin: 0 20px;
-            font-size: 1.4em;
+            margin: 0 15px;
+            font-size: 1.3em;
             position: relative;
-            transition: color 0.3s;
+            transition: color 0.2s, text-shadow 0.2s;
         }
-        nav a::after {
+        nav button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        nav a::after, nav button::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: -4px;
             left: 0;
             width: 0;
             height: 2px;
-            background: #FF1A1A;
+            background: var(--accent-color);
             transition: width 0.3s;
         }
-        nav a:hover {
-            color: #FF1A1A;
-            cursor: pointer;
+        nav a:hover, nav button:hover {
+            color: var(--accent-color);
+            text-shadow: 0 0 8px var(--accent-color);
         }
-        nav a:hover::after {
+        nav a:hover::after, nav button:hover::after {
             width: 100%;
         }
         section {
-            min-height: 100vh;
-            padding: 100px 20px 20px;
+            min-height: 90vh;
+            padding: 90px 15px 15px;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        section h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4em;
-            color: #FF1A1A;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(255, 26, 26, 0.6), 0 0 20px #6A0DAD;
-            animation: glitchText 2s infinite;
+        h2 {
+            font-family: 'Neuropol', sans-serif;
+            font-size: 3.5em;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            text-shadow: 0 0 12px var(--accent-secondary);
+            animation: glitchText 1.8s infinite;
         }
         @keyframes glitchText {
-            0%, 100% { text-shadow: 0 0 10px #FF1A1A, 0 0 20px #6A0DAD; }
-            50% { text-shadow: 2px 2px 10px #FF1A1A, -2px -2px 20px #6A0DAD; }
+            0%, 100% { text-shadow: 0 0 12px var(--accent-color), 0 0 24px var(--accent-secondary); }
+            50% { text-shadow: 3px 3px 12px var(--accent-color), -3px -3px 24px var(--accent-secondary); }
         }
-        section p {
+        p {
             font-size: 1.1em;
-            max-width: 700px;
-            margin: 0 auto 20px;
-            color: #E0E0E0;
+            max-width: 600px;
+            margin: 0 auto 10px;
+            font-weight: 400;
         }
         .widget {
-            margin-top: 25px;
+            margin-top: 20px;
             width: 100%;
-            max-width: 900px;
+            max-width: 850px;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--accent-secondary);
+            box-shadow: 0 0 12px rgba(106, 13, 173, 0.4);
         }
         /* Intro */
         .intro-card {
-            background: linear-gradient(135deg, #2A0A0A, #1A1A1A);
-            padding: 25px;
-            border-radius: 10px;
-            border: 2px solid #6A0DAD;
-            box-shadow: 0 0 15px rgba(106, 13, 173, 0.5);
-            animation: fadeIn 1s ease-in;
+            animation: fadeIn 0.8s ease-out;
+            transition: transform 0.3s;
+        }
+        .intro-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px var(--accent-color);
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Mood Setter */
-        .mood-setter {
-            background: linear-gradient(135deg, #2A0A0A, #1A1A1A);
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #6A0DAD;
+        .pfp-container {
+            margin-bottom: 20px;
         }
+        .pfp {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .pfp:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px var(--accent-secondary);
+        }
+        .pfp-name {
+            font-family: 'Neuropol', sans-serif;
+            font-size: 2em;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-secondary);
+            margin-top: 10px;
+        }
+        /* Mood Setter */
         .mood-setter button {
-            background: #FF1A1A;
-            color: #E0E0E0;
+            background: var(--accent-color);
+            color: var(--text-color);
             border: none;
-            padding: 10px 20px;
-            margin: 5px;
+            padding: 8px 18px;
+            margin: 4px;
             cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1em;
-            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+            font-family: 'Neuropol', sans-serif;
+            font-size: 1em;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
         }
         .mood-setter button:hover {
-            background: #6A0DAD;
-            color: #FF1A1A;
-            transform: scale(1.05);
-            box-shadow: 0 0 10px #6A0DAD;
+            background: var(--accent-secondary);
+            color: var(--accent-color);
+            transform: scale(1.1);
+            box-shadow: 0 0 12px var(--accent-secondary);
         }
         #mood-result {
-            margin-top: 15px;
-            font-size: 1.2em;
-            color: #E0E0E0;
+            margin-top: 10px;
+            font-size: 1.1em;
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s, transform 0.5s;
+            transform: translateY(15px);
+            transition: opacity 0.4s, transform 0.4s;
         }
         #mood-result.show {
             opacity: 1;
             transform: translateY(0);
         }
         /* About */
-        .timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-            max-width: 600px;
-        }
         .timeline div {
-            background: linear-gradient(135deg, #2A0A0A, #1A1A1A);
-            padding: 15px;
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.4s;
+            background: var(--bg-color);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            opacity: 0;
+            transform: translateX(-15px);
+            transition: opacity 0.4s, transform 0.4s;
             cursor: pointer;
+            text-align: center;
+        }
+        .timeline div.visible {
+            opacity: 1;
+            transform: translateX(0);
         }
         .timeline div:hover {
-            transform: rotateY(180deg);
-        }
-        .timeline div::after {
-            content: attr(data-details);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #6A0DAD, #FF1A1A);
-            color: #E0E0E0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1em;
-            transform: rotateY(180deg);
-            backface-visibility: hidden;
+            box-shadow: 0 0 8px var(--accent-color);
         }
         /* Skills */
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            padding: 15px;
-            background: linear-gradient(135deg, #2A0A0A, #1A1A1A);
-            border-radius: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            padding: 12px;
         }
         .skill-item {
-            text-align: left;
+            text-align: center;
         }
         .skill-item span {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2em;
-            color: #FF1A1A;
+            font-family: 'Neuropol', sans-serif;
+            font-size: 1.1em;
+            color: var(--accent-color);
             position: relative;
             cursor: pointer;
         }
@@ -208,232 +232,163 @@
             content: '';
             position: absolute;
             bottom: -2px;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 0;
             height: 1px;
-            background: #6A0DAD;
-            transition: width 0.3s;
+            background: var(--accent-secondary);
+            transition: width 0.2s;
         }
         .skill-item:hover span::after {
             width: 100%;
         }
         .skill-bar {
-            height: 8px;
-            background: linear-gradient(90deg, #FF1A1A, #6A0DAD);
-            border-radius: 4px;
-            transition: width 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+            border-radius: 3px;
+            transition: width 1.2s ease-in-out;
         }
         .skill-percent {
-            font-size: 0.9em;
-            color: #E0E0E0;
-            margin-top: 5px;
+            font-size: 0.8em;
+            margin-top: 4px;
         }
-        /* Hobbies */
-        .hobby-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            background: linear-gradient(135deg, #2A0A0A, #1A1A1A);
-            border-radius: 10px;
-        }
-        .hobby-card {
-            background: #1A1A1A;
-            padding: 15px;
-            border-radius: 8px;
-            transition: transform 0.3s, box-shadow 0.3s;
+        /* Sort Button */
+        .sort-button {
+            background: var(--accent-secondary);
+            color: var(--text-color);
+            border: none;
+            padding: 8px 15px;
             cursor: pointer;
-        }
-        .hobby-card:hover {
-            transform: rotate(5deg) scale(1.05);
-            box-shadow: 0 0 15px #6A0DAD;
-        }
-        .hobby-card img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 5px;
+            font-family: 'Neuropol', sans-serif;
+            font-size: 0.9em;
             margin-bottom: 10px;
+            transition: background 0.2s, transform 0.2s;
         }
-        .hobby-card p {
-            font-size: 1em;
-            color: #E0E0E0;
+        .sort-button:hover {
+            background: var(--accent-color);
+            transform: scale(1.05);
+        }
+        /* Hobbies, Projects, Crew, Mentions */
+        .hobby-grid, .project-grid, .crew-grid, .mentions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 15px;
+        }
+        .hobby-card, .project-card, .crew-card, .mention-card {
+            background: var(--bg-color);
+            padding: 12px;
+            border-radius: 6px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            min-height: 120px;
+            text-align: center;
+        }
+        .hobby-card:hover, .project-card:hover, .crew-card:hover, .mention-card:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 10px var(--accent-secondary);
+        }
+        .project-card h3 {
+            font-family: 'Neuropol', sans-serif;
+            font-size: 1.3em;
+            color: var(--accent-color);
+            margin: 6px 0;
         }
         /* Code */
-        .code-list {
-            background: linear-gradient(135deg, #2A0A0A, #1A1A1A);
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #6A0DAD;
-            text-align: left;
-        }
         .code-list p {
-            font-size: 1.1em;
-            margin: 8px 0;
+            font-size: 1em;
+            margin: 6px 0;
             position: relative;
             cursor: pointer;
+            text-align: center;
         }
         .code-list p::after {
             content: '';
             position: absolute;
             bottom: -2px;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 0;
             height: 1px;
-            background: #FF1A1A;
-            transition: width 0.3s;
+            background: var(--accent-color);
+            transition: width 0.2s;
         }
         .code-list p:hover::after {
             width: 100%;
         }
-        /* Projects */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 15px;
-            padding: 15px;
-            background: linear-gradient(135deg, #2A0A0A, #1A1A1A);
-            border-radius: 10px;
-        }
-        .project-card {
-            background: #1A1A1A;
-            padding: 10px;
-            border-radius: 8px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
-        .project-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #FF1A1A;
-        }
-        .project-card img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .project-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5em;
-            margin: 8px 0;
-            color: #FF1A1A;
-        }
-        /* Crew */
-        .crew-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-            padding: 15px;
-            background: linear-gradient(135deg, #2A0A0A, #1A1A1A);
-            border-radius: 10px;
-        }
-        .crew-card {
-            background: #1A1A1A;
-            padding: 10px;
-            border-radius: 8px;
-            transition: transform 0.3s;
-            cursor: pointer;
-        }
-        .crew-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #6A0DAD;
-        }
-        .crew-card img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 8px;
-        }
         /* Links */
         .social-links {
             display: flex;
-            gap: 15px;
-            padding: 15px;
-            background: linear-gradient(135deg, #2A0A0A, #1A1A1A);
-            border-radius: 10px;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px;
         }
         .social-links a {
-            font-size: 2em;
-            color: #E0E0E0;
-            transition: transform 0.3s, color 0.3s;
+            font-size: 1.8em;
+            color: var(--text-color);
+            transition: transform 0.2s, color 0.2s;
         }
         .social-links a:hover {
-            color: #FF1A1A;
-            transform: rotate(10deg);
+            color: var(--accent-color);
+            transform: rotate(12deg);
         }
         /* Footer */
         footer {
-            padding: 15px;
-            background: #1A1A1A;
-            color: #E0E0E0;
-            font-size: 0.9em;
+            padding: 12px;
+            background: var(--bg-color);
+            text-align: center;
+            font-size: 0.8em;
         }
         footer a {
-            color: #FF1A1A;
+            color: var(--accent-color);
             text-decoration: none;
             position: relative;
-            cursor: pointer;
         }
         footer a::after {
             content: '';
             position: absolute;
             bottom: -2px;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 0;
             height: 1px;
-            background: #6A0DAD;
-            transition: width 0.3s;
+            background: var(--accent-secondary);
+            transition: width 0.2s;
         }
         footer a:hover::after {
             width: 100%;
         }
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 768px) {
-            nav a {
-                font-size: 1.2em;
-                margin: 0 10px;
-            }
-            section h2 {
-                font-size: 3em;
-            }
-            .widget {
-                max-width: 100%;
-            }
-            .hobby-grid, .project-grid, .crew-grid {
-                grid-template-columns: 1fr;
-            }
+            nav a, nav button { font-size: 1.1em; margin: 0 8px; }
+            h2 { font-size: 2.8em; }
+            .hobby-grid, .project-grid, .crew-grid, .mentions-grid { grid-template-columns: 1fr; }
+            .widget { max-width: 100%; }
         }
         @media (max-width: 480px) {
-            nav {
-                padding: 10px 0;
-            }
-            nav a {
-                font-size: 1em;
-                margin: 0 5px;
-            }
-            section {
-                padding: 80px 10px 10px;
-            }
-            section h2 {
-                font-size: 2.5em;
-            }
-            .social-links a {
-                font-size: 1.5em;
-            }
+            nav { padding: 8px 0; }
+            nav a, nav button { font-size: 0.9em; margin: 0 4px; }
+            section { padding: 70px 10px 10px; }
+            h2 { font-size: 2.2em; }
+            .social-links a { font-size: 1.4em; }
+            .pfp { width: 120px; height: 120px; }
+            .pfp-name { font-size: 1.5em; }
         }
     </style>
 </head>
 <body>
-    <!-- Audio Elements -->
+    <!-- Audio -->
     <audio id="bg-music" loop>
-        <source src="assets/audio/let_u_go.mp3" type="audio/mpeg">
+        <source src="https://raw.githubusercontent.com/MaroTube/x-portfolio/refs/heads/main/assets/audio/let_u_go.mp3" type="audio/mpeg">
     </audio>
     <audio id="hover-sound">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-short-glitch-2191.mp3" type="audio/mpeg">
     </audio>
     <audio id="click-sound">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-retro-game-over-213.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bg-hum" loop>
+        <source src="assets/audio/cyber_hum.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Particle Background -->
@@ -449,244 +404,240 @@
         <a href="#code">Code</a>
         <a href="#projects">Projects</a>
         <a href="#crew">Crew</a>
+        <a href="#mentions">Mentions</a>
         <a href="#links">Links</a>
+        <button id="mode-toggle"><i class="fas fa-moon"></i></button>
     </nav>
 
     <!-- Intro -->
     <section id="intro" class="animate">
         <h2>Yo, It’s X</h2>
+        <div class="pfp-container">
+            <img class="pfp" src="https://via.placeholder.com/150?text=X" alt="Maro (X)">
+            <div class="pfp-name">Maro (X)</div>
+        </div>
         <div class="widget intro-card">
-            <p>✮ Name: Maro (Call me X) | 15 | Egyptian | 5'11 | INFP</p>
-            <p>✮ Speed. Sports. Music. Real vibes only. DMs open—hit me up.</p>
+            <p id="intro-text">✮ Maro, aka X. 15. Egyptian. 5'11. INFP.</p>
+            <p>✮ I’m all about speed, beats, and real shit. Hit my DMs—let’s vibe.</p>
         </div>
     </section>
 
     <!-- Home -->
     <section id="home" class="animate">
-        <h2>I’m X</h2>
-        <p>I live life fast, real, and on my own terms. If it’s risky or crazy, I’m down—drifting cars, BMX, parkour, pulling dares. Adrenaline’s my thing.</p>
+        <h2>X, Unlocked</h2>
+        <p>I move fast, live loud, and don’t fuck with limits. Cars, bikes, dares—I’m in.</p>
         <div class="widget mood-setter">
-            <p>How You Want Me Actin’?</p>
-            <button onclick="setMood('hype')">Hype Me Up</button>
-            <button onclick="setMood('chill')">Keep It Chill</button>
-            <button onclick="setMood('grind')">Get Me Grinding</button>
-            <button onclick="setMood('chaos')">Unleash Chaos</button>
+            <p>What’s my mode?</p>
+            <button onclick="setMood('hype')">Crank It Up</button>
+            <button onclick="setMood('chill')">Stay Smooth</button>
+            <button onclick="setMood('grind')">Lock In</button>
+            <button onclick="setMood('chaos')">Go Wild</button>
             <p id="mood-result"></p>
         </div>
     </section>
 
     <!-- About -->
     <section id="about" class="animate">
-        <h2>About Me</h2>
-        <p>Just a guy who loves tech, cars, and good vibes. Been coding since I figured out it’s like hacking life.</p>
+        <h2>My Deal</h2>
+        <p>I’m that dude who hacks life with tech and tears up the streets. No fake vibes.</p>
         <div class="widget timeline">
-            <div data-details="Started messing with code—couldn’t stop.">2019: Caught the coding bug</div>
-            <div data-details="Built my first app—felt unstoppable.">2021: First app drop</div>
-            <div data-details="Made this site—pure fire, no cap.">2025: This site went live</div>
-            <!-- Add more timeline events like this -->
-            <!-- <div data-details="Your story here">Year: Event</div> -->
+            <div>2019: Code got me hooked.</div>
+            <div>2021: Dropped my first app—straight heat.</div>
+            <div>2023: Drifting became my thing.</div>
+            <div>2025: Built this site to flex.</div>
         </div>
     </section>
 
     <!-- Skills -->
     <section id="skills" class="animate">
-        <h2>Skills</h2>
-        <p>I’ve got a lot—here’s some of ‘em.</p>
-        <div class="widget skills-grid">
-            <div class="skill-item">
+        <h2>What I Bring</h2>
+        <p>I got skills that slap—check the stats.</p>
+        <button class="sort-button" onclick="sortSkills()">Sort by Dopeness</button>
+        <div class="widget skills-grid" id="skills-grid">
+            <div class="skill-item" data-percent="90">
                 <span>Coding</span>
                 <div class="skill-bar" style="width: 0;" data-width="90"></div>
                 <div class="skill-percent">90%</div>
             </div>
-            <div class="skill-item">
-                <span>Fixing Stuff</span>
+            <div class="skill-item" data-percent="95">
+                <span>Fixing Shit</span>
                 <div class="skill-bar" style="width: 0;" data-width="95"></div>
                 <div class="skill-percent">95%</div>
             </div>
-            <div class="skill-item">
+            <div class="skill-item" data-percent="85">
                 <span>Sports</span>
                 <div class="skill-bar" style="width: 0;" data-width="85"></div>
                 <div class="skill-percent">85%</div>
             </div>
-            <div class="skill-item">
+            <div class="skill-item" data-percent="80">
                 <span>Cooking</span>
                 <div class="skill-bar" style="width: 0;" data-width="80"></div>
                 <div class="skill-percent">80%</div>
             </div>
-            <!-- Extra examples for you to edit -->
-            <!-- <div class="skill-item">
+            <div class="skill-item" data-percent="90">
+                <span>Drifting</span>
+                <div class="skill-bar" style="width: 0;" data-width="90"></div>
+                <div class="skill-percent">90%</div>
+            </div>
+            <div class="skill-item" data-percent="85">
+                <span>Parkour</span>
+                <div class="skill-bar" style="width: 0;" data-width="85"></div>
+                <div class="skill-percent">85%</div>
+            </div>
+            <div class="skill-item" data-percent="80">
+                <span>Beat Making</span>
+                <div class="skill-bar" style="width: 0;" data-width="80"></div>
+                <div class="skill-percent">80%</div>
+            </div>
+            <div class="skill-item" data-percent="75">
+                <span>Street Art</span>
+                <div class="skill-bar" style="width: 0;" data-width="75"></div>
+                <div class="skill-percent">75%</div>
+            </div>
+            <div class="skill-item" data-percent="70">
                 <span>Gaming</span>
                 <div class="skill-bar" style="width: 0;" data-width="70"></div>
                 <div class="skill-percent">70%</div>
-            </div> -->
-            <!-- <div class="skill-item">
-                <span>Drawing</span>
-                <div class="skill-bar" style="width: 0;" data-width="65"></div>
-                <div class="skill-percent">65%</div>
-            </div> -->
+            </div>
         </div>
     </section>
 
     <!-- Hobbies -->
     <section id="hobbies" class="animate">
-        <h2>Hobbies</h2>
-        <p>BMX, drifting, parkour, ballin’, gaming, cooking—too many to list, bro.</p>
-        <div class="widget hobby-grid">
-            <div class="hobby-card">
-                <img src="assets/images/bmx.jpg" alt="BMX">
+        <h2>My Jams</h2>
+        <p>I stay moving—bikes, cars, courts. Name it, I’m on it.</p>
+        <button class="sort-button" onclick="sortHobbies()">Sort A-Z</button>
+        <div class="widget hobby-grid" id="hobby-grid">
+            <div class="hobby-card" data-name="BMX">
                 <p>BMX</p>
             </div>
-            <div class="hobby-card">
-                <img src="assets/images/drifting.jpg" alt="Drifting">
+            <div class="hobby-card" data-name="Drifting">
                 <p>Drifting</p>
             </div>
-            <div class="hobby-card">
-                <img src="assets/images/parkour.jpg" alt="Parkour">
+            <div class="hobby-card" data-name="Parkour">
                 <p>Parkour</p>
             </div>
-            <div class="hobby-card">
-                <img src="assets/images/basketball.jpg" alt="Basketball">
+            <div class="hobby-card" data-name="Basketball">
                 <p>Basketball</p>
             </div>
-            <div class="hobby-card">
-                <img src="assets/images/volleyball.jpg" alt="Volleyball">
-                <p>Volleyball</p>
-            </div>
-            <div class="hobby-card">
-                <img src="assets/images/tennis.jpg" alt="Tennis">
-                <p>Tennis</p>
-            </div>
-            <div class="hobby-card">
-                <img src="assets/images/drawing.jpg" alt="Drawing">
-                <p>Drawing</p>
-            </div>
-            <div class="hobby-card">
-                <img src="assets/images/fixing.jpg" alt="Fixing Stuff">
-                <p>Fixing Stuff</p>
-            </div>
-            <div class="hobby-card">
-                <img src="assets/images/football.jpg" alt="Football">
-                <p>Football</p>
-            </div>
-            <div class="hobby-card">
-                <img src="assets/images/skating.jpg" alt="Skating">
-                <p>Skating</p>
-            </div>
-            <div class="hobby-card">
-                <img src="assets/images/daredevil.jpg" alt="Daredevil">
-                <p>Daredevil</p>
-            </div>
-            <!-- Extra examples for you to edit -->
-            <!-- <div class="hobby-card">
-                <img src="assets/images/gaming.jpg" alt="Gaming">
-                <p>Gaming</p>
-            </div> -->
-            <!-- <div class="hobby-card">
-                <img src="assets/images/cooking.jpg" alt="Cooking">
-                <p>Cooking</p>
-            </div> -->
         </div>
     </section>
 
     <!-- Code -->
     <section id="code" class="animate">
-        <h2>My Code</h2>
-        <p>How I roll—no fake vibes.</p>
+        <h2>My Rules</h2>
+        <p>I live raw—my code keeps it 100.</p>
         <div class="widget code-list">
-            <p>✮ Live Unapologetically: I do me, no excuses.</p>
-            <p>✮ Take What’s Mine: If I want it, I grab it.</p>
-            <p>✮ Break the Rules: My path, my rules.</p>
-            <p>✮ Keep It Tight: Real ones only.</p>
-            <p>✮ No Fake Vibes: Be real or bounce.</p>
-            <p>✮ Handle Your Business: I deal with it, no drama.</p>
-            <!-- Add more codes like this -->
-            <!-- <p>✮ Stay Hungry: Always chasing the next thrill.</p> -->
+            <p>✮ No Apologies: I’m me, deal with it.</p>
+            <p>✮ Grab It: Want it? Take it.</p>
+            <p>✮ Fuck the Norm: I carve my own way.</p>
+            <p>✮ Real Ones Only: No snakes allowed.</p>
         </div>
     </section>
 
     <!-- Projects -->
     <section id="projects" class="animate">
-        <h2>Projects</h2>
-        <p>Stuff I’ve built—more to come.</p>
+        <h2>My Builds</h2>
+        <p>I make shit that pops off—more coming.</p>
         <div class="widget project-grid">
             <div class="project-card">
-                <img src="assets/images/project1.jpg" alt="Project 1">
                 <h3>Project X1</h3>
-                <p>Coding something wild.</p>
+                <p>Straight-up wild code.</p>
             </div>
             <div class="project-card">
-                <img src="assets/images/project2.jpg" alt="Project 2">
                 <h3>Project X2</h3>
-                <p>Another banger.</p>
+                <p>Next-level heat.</p>
             </div>
             <div class="project-card">
-                <img src="assets/images/project3.jpg" alt="Project 3">
                 <h3>Project X3</h3>
-                <p>Still fire.</p>
+                <p>Still a banger.</p>
             </div>
-            <!-- Add more projects like this -->
-            <!-- <div class="project-card">
-                <img src="assets/images/newproject.jpg" alt="New Project">
-                <h3>New Project</h3>
-                <p>Desc</p>
-            </div> -->
+            <div class="project-card">
+                <h3>Project X4</h3>
+                <p>Fresh as fuck.</p>
+            </div>
         </div>
     </section>
 
     <!-- Crew -->
     <section id="crew" class="animate">
-        <h2>The Crew</h2>
-        <p>Real ones only—my people.</p>
+        <h2>My Squad</h2>
+        <p>Only the realest ride with me.</p>
         <div class="widget crew-grid">
             <div class="crew-card">
-                <img src="assets/images/friend1.jpg" alt="Friend 1">
-                <p>Mo - Parkour king</p>
+                <p>Mo - Parkour beast</p>
             </div>
             <div class="crew-card">
-                <img src="assets/images/friend2.jpg" alt="Friend 2">
-                <p>Ali - Drift bro</p>
+                <p>Ali - Drift god</p>
             </div>
             <div class="crew-card">
-                <img src="assets/images/friend3.jpg" alt="Friend 3">
-                <p>Zizo - Baller</p>
+                <p>Zizo - Court king</p>
             </div>
-            <!-- Add more crew members like this -->
-            <!-- <div class="crew-card">
-                <img src="assets/images/newfriend.jpg" alt="New Friend">
-                <p>Name - Role</p>
-            </div> -->
+            <div class="crew-card">
+                <p>Omar - Hype lord</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Honorable Mentions -->
+    <section id="mentions" class="animate">
+        <h2>Big Ups</h2>
+        <p>My day ones—respect always.</p>
+        <div class="widget mentions-grid">
+            <div class="mention-card">
+                <p>Ahmed - Drift king</p>
+            </div>
+            <div class="mention-card">
+                <p>Youssef - Game slayer</p>
+            </div>
+            <div class="mention-card">
+                <p>Kareem - Pure vibes</p>
+            </div>
+            <div class="mention-card">
+                <p>Sami - Parkour goat</p>
+            </div>
+            <div class="mention-card">
+                <p>Hassan - Beat plug</p>
+            </div>
         </div>
     </section>
 
     <!-- Links -->
     <section id="links" class="animate">
-        <h2>Hit Me Up</h2>
-        <p>DMs open—let’s vibe.</p>
+        <h2>Link Up</h2>
+        <p>Yo, slide in—let’s connect.</p>
         <div class="widget social-links">
-            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
             <a href="https://discord.com" target="_blank"><i class="fab fa-discord"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://spotify.com" target="_blank"><i class="fab fa-spotify"></i></a>
+            <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>Built by X | <a href="#" onclick="easterEgg()">Vibe check?</a></p>
+        <p>X’s World | <a href="#" onclick="easterEgg()">You real?</a></p>
     </footer>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Music Setup
+        // Dark/Light Mode
+        const toggle = document.getElementById('mode-toggle');
+        toggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            toggle.innerHTML = document.body.classList.contains('light-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+
+        // Music & Hum
         const bgMusic = document.getElementById('bg-music');
+        const bgHum = document.getElementById('bg-hum');
         bgMusic.currentTime = 15;
         bgMusic.volume = 0.4;
+        bgHum.volume = 0.1;
         bgMusic.play();
-        bgMusic.addEventListener('ended', () => {
-            bgMusic.currentTime = 15;
-            bgMusic.play();
-        });
+        bgHum.play();
 
         // Sound Effects
         const hoverSound = document.getElementById('hover-sound');
@@ -696,7 +647,7 @@
             sound.play();
             sound.addEventListener('ended', () => bgMusic.volume = 0.4, { once: true });
         }
-        document.querySelectorAll('button, a, .project-card, .crew-card, .timeline div, .hobby-card, .skill-item span, .code-list p').forEach(el => {
+        document.querySelectorAll('button, a, .project-card, .crew-card, .hobby-card, .skill-item span, .code-list p, .mention-card').forEach(el => {
             el.addEventListener('mouseenter', () => playSound(hoverSound));
             el.addEventListener('click', () => playSound(clickSound));
         });
@@ -704,13 +655,13 @@
         // Particles
         particlesJS("particles-js", {
             particles: {
-                number: { value: 100, density: { enable: true, value_area: 800 } },
-                color: { value: ["#E0E0E0", "#FF1A1A", "#6A0DAD"] },
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: ["#D9D9D9", "#FF1A1A", "#6A0DAD"] },
                 shape: { type: ["circle", "triangle"] },
-                opacity: { value: 0.5, random: true },
-                size: { value: 3, random: true },
-                line_linked: { enable: true, distance: 120, color: "#FF1A1A", opacity: 0.3, width: 1 },
-                move: { enable: true, speed: 6, direction: "none", random: true }
+                opacity: { value: 0.6, random: true },
+                size: { value: 2.5, random: true },
+                line_linked: { enable: true, distance: 100, color: "#FF1A1A", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 5, direction: "none", random: true }
             },
             interactivity: {
                 events: {
@@ -739,18 +690,41 @@
                             bar.style.width = bar.getAttribute('data-width') + '%';
                         });
                     }
+                    if (entry.target.id === 'about') {
+                        document.querySelectorAll('.timeline div').forEach((div, index) => {
+                            setTimeout(() => div.classList.add('visible'), index * 150);
+                        });
+                    }
                 }
             });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.4 });
         animates.forEach(el => observer.observe(el));
+
+        // Sort Skills
+        function sortSkills() {
+            const grid = document.getElementById('skills-grid');
+            const items = Array.from(grid.querySelectorAll('.skill-item'));
+            items.sort((a, b) => b.dataset.percent - a.dataset.percent);
+            grid.innerHTML = '';
+            items.forEach(item => grid.appendChild(item));
+        }
+
+        // Sort Hobbies
+        function sortHobbies() {
+            const grid = document.getElementById('hobby-grid');
+            const items = Array.from(grid.querySelectorAll('.hobby-card'));
+            items.sort((a, b) => a.dataset.name.localeCompare(b.dataset.name));
+            grid.innerHTML = '';
+            items.forEach(item => grid.appendChild(item));
+        }
 
         // Mood Setter
         function setMood(mood) {
             const results = {
-                hype: "Yo, I’m all gas—no brakes, let’s turn it up!",
-                chill: "Laid back, keeping it smooth, just vibin’.",
-                grind: "Locked in, stacking wins—ain’t stopping.",
-                chaos: "Wild energy—let’s break some rules."
+                hype: "Full throttle, bro—let’s fucking go!",
+                chill: "Lowkey vibes, just cruising smooth.",
+                grind: "Eyes on the prize—I’m stacking Ws.",
+                chaos: "Rules? Nah, I’m tearing shit up."
             };
             const resultEl = document.getElementById('mood-result');
             resultEl.textContent = results[mood];
@@ -758,9 +732,23 @@
             setTimeout(() => resultEl.classList.add('show'), 10);
         }
 
+        // Typewriter Effect for Intro
+        const introText = document.getElementById('intro-text');
+        const text = introText.textContent;
+        introText.textContent = '';
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                introText.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+        typeWriter();
+
         // Easter Egg
         function easterEgg() {
-            alert("Yo, you real or what? —X, 2025");
+            alert("You tryna vibe my boy? —X, 2025");
         }
     </script>
 </body>

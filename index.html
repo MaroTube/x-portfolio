@@ -8,7 +8,6 @@
     <link href="https://fontmeme.com/fonts/neuropol-font/" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Dark and Light Mode Colors */
         :root {
             --bg-color: #0F0F0F;
             --text-color: #D9D9D9;
@@ -19,8 +18,6 @@
         body.light-mode {
             --bg-color: #E6E6E6;
             --text-color: #1A1A1A;
-            --accent-color: #FF1A1A;
-            --accent-secondary: #6A0DAD;
             --card-bg: linear-gradient(135deg, #F5F5F5, #D9D9D9);
         }
         * {
@@ -32,14 +29,42 @@
             font-family: 'Exo 2', sans-serif;
             background: var(--bg-color);
             color: var(--text-color);
-            overflow-x: hidden;
             line-height: 1.4;
             animation: cyberFade 1.2s ease-out;
+            transition: transform 0.1s ease;
+            overflow: hidden; /* Prevent scroll during intro */
         }
         @keyframes cyberFade {
             0% { opacity: 0; filter: blur(5px); }
-            50% { opacity: 0.5; filter: blur(2px); box-shadow: 0 0 20px var(--accent-color); }
-            100% { opacity: 1; filter: blur(0); box-shadow: none; }
+            100% { opacity: 1; filter: blur(0); }
+        }
+        body.shake {
+            transform: translateX(2px) rotate(0.5deg);
+        }
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        #intro-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #intro-overlay h1 {
+            font-family: 'Neuropol', sans-serif;
+            font-size: 3em;
+            color: var(--accent-color);
+            text-shadow: 0 0 15px var(--accent-secondary);
+            cursor: pointer;
+            animation: glitchText 2s infinite;
         }
         #particles-js {
             position: fixed;
@@ -47,8 +72,6 @@
             min-height: 100vh;
             z-index: -1;
             background: var(--bg-color);
-            background-size: cover;
-            background-attachment: fixed;
         }
         nav {
             position: fixed;
@@ -56,7 +79,7 @@
             width: 100%;
             background: var(--card-bg);
             text-align: center;
-            padding: 12px 0;
+            padding: 10px 0;
             z-index: 100;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
         }
@@ -64,9 +87,8 @@
             font-family: 'Neuropol', sans-serif;
             color: var(--text-color);
             text-decoration: none;
-            margin: 0 15px;
-            font-size: 1.3em;
-            position: relative;
+            margin: 0 12px;
+            font-size: 1.2em;
             transition: color 0.2s, text-shadow 0.2s;
         }
         nav button {
@@ -74,26 +96,13 @@
             border: none;
             cursor: pointer;
         }
-        nav a::after, nav button::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-color);
-            transition: width 0.3s;
-        }
         nav a:hover, nav button:hover {
             color: var(--accent-color);
             text-shadow: 0 0 8px var(--accent-color);
         }
-        nav a:hover::after, nav button:hover::after {
-            width: 100%;
-        }
         section {
             min-height: 90vh;
-            padding: 90px 15px 15px;
+            padding: 80px 15px 15px;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -102,239 +111,193 @@
         }
         h2 {
             font-family: 'Neuropol', sans-serif;
-            font-size: 3.5em;
+            font-size: 3.2em;
             color: var(--accent-color);
-            margin-bottom: 15px;
-            text-shadow: 0 0 12px var(--accent-secondary);
-            animation: glitchText 1.8s infinite;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px var(--accent-secondary);
+            animation: glitchText 2s infinite;
         }
         @keyframes glitchText {
-            0%, 100% { text-shadow: 0 0 12px var(--accent-color), 0 0 24px var(--accent-secondary); }
-            50% { text-shadow: 3px 3px 12px var(--accent-color), -3px -3px 24px var(--accent-secondary); }
+            0%, 100% { text-shadow: 0 0 10px var(--accent-color); }
+            50% { text-shadow: 2px 2px 10px var(--accent-secondary); }
         }
         p {
             font-size: 1.1em;
             max-width: 600px;
-            margin: 0 auto 10px;
-            font-weight: 400;
+            margin: 0 auto 8px;
         }
         .widget {
-            margin-top: 20px;
+            margin-top: 15px;
             width: 100%;
-            max-width: 850px;
+            max-width: 800px;
             background: var(--card-bg);
-            padding: 15px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 6px;
             border: 1px solid var(--accent-secondary);
-            box-shadow: 0 0 12px rgba(106, 13, 173, 0.4);
+            box-shadow: 0 0 10px rgba(106, 13, 173, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        /* Intro */
+        .widget:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 12px var(--accent-color);
+            border-color: var(--accent-color);
+            animation: pulseBorder 1s infinite;
+        }
+        @keyframes pulseBorder {
+            0%, 100% { border-color: var(--accent-secondary); }
+            50% { border-color: var(--accent-color); }
+        }
         .intro-card {
             animation: fadeIn 0.8s ease-out;
-            transition: transform 0.3s;
-        }
-        .intro-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 15px var(--accent-color);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .pfp-container {
-            margin-bottom: 20px;
-        }
         .pfp {
-            width: 150px;
-            height: 150px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             border: 3px solid var(--accent-color);
-            box-shadow: 0 0 15px var(--accent-color);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 0 12px var(--accent-color);
+            transition: transform 0.3s;
         }
         .pfp:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 25px var(--accent-secondary);
         }
         .pfp-name {
             font-family: 'Neuropol', sans-serif;
-            font-size: 2em;
+            font-size: 1.8em;
             color: var(--accent-color);
-            text-shadow: 0 0 10px var(--accent-secondary);
-            margin-top: 10px;
+            margin-top: 8px;
         }
-        /* Mood Setter */
         .mood-setter button {
             background: var(--accent-color);
             color: var(--text-color);
             border: none;
-            padding: 8px 18px;
+            padding: 8px 16px;
             margin: 4px;
             cursor: pointer;
             font-family: 'Neuropol', sans-serif;
-            font-size: 1em;
-            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            transition: background 0.2s, transform 0.2s;
         }
         .mood-setter button:hover {
             background: var(--accent-secondary);
-            color: var(--accent-color);
-            transform: scale(1.1);
-            box-shadow: 0 0 12px var(--accent-secondary);
+            transform: scale(1.05);
         }
         #mood-result {
-            margin-top: 10px;
+            margin-top: 8px;
             font-size: 1.1em;
             opacity: 0;
-            transform: translateY(15px);
+            transform: translateY(10px);
             transition: opacity 0.4s, transform 0.4s;
         }
         #mood-result.show {
             opacity: 1;
             transform: translateY(0);
         }
-        /* About */
         .timeline div {
             background: var(--bg-color);
-            padding: 12px;
-            border-radius: 6px;
-            margin: 8px 0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 6px 0;
             opacity: 0;
-            transform: translateX(-15px);
+            transform: translateX(-10px);
             transition: opacity 0.4s, transform 0.4s;
-            cursor: pointer;
-            text-align: center;
         }
         .timeline div.visible {
             opacity: 1;
             transform: translateX(0);
         }
-        .timeline div:hover {
-            box-shadow: 0 0 8px var(--accent-color);
-        }
-        /* Skills */
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 12px;
-            padding: 12px;
-        }
-        .skill-item {
-            text-align: center;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            padding: 10px;
         }
         .skill-item span {
             font-family: 'Neuropol', sans-serif;
-            font-size: 1.1em;
+            font-size: 1em;
             color: var(--accent-color);
-            position: relative;
-            cursor: pointer;
-        }
-        .skill-item span::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 1px;
-            background: var(--accent-secondary);
-            transition: width 0.2s;
-        }
-        .skill-item:hover span::after {
-            width: 100%;
         }
         .skill-bar {
-            height: 6px;
+            height: 5px;
             background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
-            border-radius: 3px;
-            transition: width 1.2s ease-in-out;
+            border-radius: 2px;
+            transition: width 1s ease-in-out;
         }
         .skill-percent {
             font-size: 0.8em;
-            margin-top: 4px;
+            margin-top: 3px;
         }
-        /* Sort Button */
-        .sort-button {
-            background: var(--accent-secondary);
-            color: var(--text-color);
-            border: none;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-family: 'Neuropol', sans-serif;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            transition: background 0.2s, transform 0.2s;
-        }
-        .sort-button:hover {
-            background: var(--accent-color);
-            transform: scale(1.05);
-        }
-        /* Hobbies, Projects, Crew, Mentions */
         .hobby-grid, .project-grid, .crew-grid, .mentions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            padding: 15px;
-        }
-        .hobby-card, .project-card, .crew-card, .mention-card {
-            background: var(--bg-color);
-            padding: 12px;
-            border-radius: 6px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-            min-height: 120px;
-            text-align: center;
-        }
-        .hobby-card:hover, .project-card:hover, .crew-card:hover, .mention-card:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 10px var(--accent-secondary);
-        }
-        .project-card h3 {
-            font-family: 'Neuropol', sans-serif;
-            font-size: 1.3em;
-            color: var(--accent-color);
-            margin: 6px 0;
-        }
-        /* Code */
-        .code-list p {
-            font-size: 1em;
-            margin: 6px 0;
-            position: relative;
-            cursor: pointer;
-            text-align: center;
-        }
-        .code-list p::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 1px;
-            background: var(--accent-color);
-            transition: width 0.2s;
-        }
-        .code-list p:hover::after {
-            width: 100%;
-        }
-        /* Links */
-        .social-links {
-            display: flex;
-            justify-content: center;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
             gap: 12px;
             padding: 12px;
         }
+        .hobby-card, .project-card, .crew-card, .mention-card {
+            background: var(--bg-color);
+            padding: 10px;
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+        .hobby-card:hover, .project-card:hover, .crew-card:hover, .mention-card:hover {
+            transform: scale(1.05);
+        }
+        .project-card h3 {
+            font-family: 'Neuropol', sans-serif;
+            font-size: 1.2em;
+            color: var(--accent-color);
+            margin: 5px 0;
+        }
+        .code-list {
+            text-align: center; /* Ensure container enforces centering */
+        }
+        .code-list p {
+            font-size: 1.1em;
+            margin: 10px 0; /* Increased spacing */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%; /* Ensure full width for centering */
+            text-shadow: 0 0 5px rgba(255, 26, 26, 0.5); /* Subtle glow */
+            position: relative;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s, transform 0.4s;
+        }
+        .code-list p.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .code-list p:hover {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+            animation: neonFlicker 0.5s infinite;
+        }
+        @keyframes neonFlicker {
+            0%, 100% { text-shadow: 0 0 10px var(--accent-color); }
+            50% { text-shadow: 0 0 15px var(--accent-secondary); }
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+        }
         .social-links a {
-            font-size: 1.8em;
+            font-size: 1.6em;
             color: var(--text-color);
             transition: transform 0.2s, color 0.2s;
         }
         .social-links a:hover {
             color: var(--accent-color);
-            transform: rotate(12deg);
+            transform: rotate(10deg);
         }
-        /* Footer */
         footer {
-            padding: 12px;
+            padding: 10px;
             background: var(--bg-color);
             text-align: center;
             font-size: 0.8em;
@@ -342,44 +305,31 @@
         footer a {
             color: var(--accent-color);
             text-decoration: none;
-            position: relative;
         }
-        footer a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 1px;
-            background: var(--accent-secondary);
-            transition: width 0.2s;
-        }
-        footer a:hover::after {
-            width: 100%;
-        }
-        /* Responsive */
         @media (max-width: 768px) {
-            nav a, nav button { font-size: 1.1em; margin: 0 8px; }
-            h2 { font-size: 2.8em; }
+            nav a, nav button { font-size: 1em; margin: 0 6px; }
+            h2 { font-size: 2.5em; }
             .hobby-grid, .project-grid, .crew-grid, .mentions-grid { grid-template-columns: 1fr; }
-            .widget { max-width: 100%; }
+            #intro-overlay h1 { font-size: 2em; }
         }
         @media (max-width: 480px) {
-            nav { padding: 8px 0; }
-            nav a, nav button { font-size: 0.9em; margin: 0 4px; }
-            section { padding: 70px 10px 10px; }
-            h2 { font-size: 2.2em; }
-            .social-links a { font-size: 1.4em; }
-            .pfp { width: 120px; height: 120px; }
-            .pfp-name { font-size: 1.5em; }
+            nav { padding: 6px 0; }
+            section { padding: 60px 10px 10px; }
+            h2 { font-size: 2em; }
+            .pfp { width: 100px; height: 100px; }
+            #intro-overlay h1 { font-size: 1.5em; }
         }
     </style>
 </head>
 <body>
+    <!-- Intro Overlay -->
+    <div id="intro-overlay">
+        <h1>Click to Enter</h1>
+    </div>
+
     <!-- Audio -->
     <audio id="bg-music" loop>
-        <source src="https://raw.githubusercontent.com/MaroTube/x-portfolio/refs/heads/main/assets/audio/let_u_go.mp3" type="audio/mpeg">
+        <source src="./assets/audio/track.mp3" type="audio/mpeg">
     </audio>
     <audio id="hover-sound">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-short-glitch-2191.mp3" type="audio/mpeg">
@@ -387,45 +337,42 @@
     <audio id="click-sound">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-retro-game-over-213.mp3" type="audio/mpeg">
     </audio>
-    <audio id="bg-hum" loop>
-        <source src="assets/audio/cyber_hum.mp3" type="audio/mpeg">
-    </audio>
 
     <!-- Particle Background -->
     <div id="particles-js"></div>
 
     <!-- Navigation -->
     <nav>
-        <a href="#intro">Intro</a>
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#hobbies">Hobbies</a>
-        <a href="#code">Code</a>
-        <a href="#projects">Projects</a>
-        <a href="#crew">Crew</a>
-        <a href="#mentions">Mentions</a>
-        <a href="#links">Links</a>
-        <button id="mode-toggle"><i class="fas fa-moon"></i></button>
+        <a href="#intro" aria-label="Intro Section">Intro</a>
+        <a href="#home" aria-label="Home Section">Home</a>
+        <a href="#about" aria-label="About Section">About</a>
+        <a href="#skills" aria-label="Skills Section">Skills</a>
+        <a href="#hobbies" aria-label="Hobbies Section">Hobbies</a>
+        <a href="#code" aria-label="Code Section">Code</a>
+        <a href="#projects" aria-label="Projects Section">Projects</a>
+        <a href="#crew" aria-label="Crew Section">Crew</a>
+        <a href="#mentions" aria-label="Mentions Section">Mentions</a>
+        <a href="#links" aria-label="Links Section">Links</a>
+        <button id="mode-toggle" aria-label="Toggle Dark/Light Mode"><i class="fas fa-moon"></i></button>
     </nav>
 
     <!-- Intro -->
     <section id="intro" class="animate">
         <h2>Yo, It’s X</h2>
         <div class="pfp-container">
-            <img class="pfp" src="https://via.placeholder.com/150?text=X" alt="Maro (X)">
+            <img class="pfp" src="https://raw.githubusercontent.com/MaroTube/x-portfolio/refs/heads/main/assets/New%20Project.jpg" alt="Maro (X)">
             <div class="pfp-name">Maro (X)</div>
         </div>
         <div class="widget intro-card">
-            <p id="intro-text">✮ Maro, aka X. 15. Egyptian. 5'11. INFP.</p>
-            <p>✮ I’m all about speed, beats, and real shit. Hit my DMs—let’s vibe.</p>
+            <p id="intro-text">Maro, aka X. 16. Egyptian. 6'1. INFP.</p>
+            <p>I’m all about speed, risks, and real shit. Hit my DMs—let’s vibe.</p>
         </div>
     </section>
 
     <!-- Home -->
     <section id="home" class="animate">
         <h2>X, Unlocked</h2>
-        <p>I move fast, live loud, and don’t fuck with limits. Cars, bikes, dares—I’m in.</p>
+        <p>I move fast, live loud, there's nothing such as limits. Oh and talking about dares? I’m in.</p>
         <div class="widget mood-setter">
             <p>What’s my mode?</p>
             <button onclick="setMood('hype')">Crank It Up</button>
@@ -441,10 +388,10 @@
         <h2>My Deal</h2>
         <p>I’m that dude who hacks life with tech and tears up the streets. No fake vibes.</p>
         <div class="widget timeline">
-            <div>2019: Code got me hooked.</div>
-            <div>2021: Dropped my first app—straight heat.</div>
+            <div>2019: Got into psychology a little.</div>
+            <div>2021: Got into coding and structures.</div>
             <div>2023: Drifting became my thing.</div>
-            <div>2025: Built this site to flex.</div>
+            <div>2025: Built this site to flex, and had more in life</div>
         </div>
     </section>
 
@@ -452,10 +399,9 @@
     <section id="skills" class="animate">
         <h2>What I Bring</h2>
         <p>I got skills that slap—check the stats.</p>
-        <button class="sort-button" onclick="sortSkills()">Sort by Dopeness</button>
-        <div class="widget skills-grid" id="skills-grid">
+        <div class="widget skills-grid">
             <div class="skill-item" data-percent="90">
-                <span>Coding</span>
+                <span>Risking my life</span>
                 <div class="skill-bar" style="width: 0;" data-width="90"></div>
                 <div class="skill-percent">90%</div>
             </div>
@@ -485,7 +431,7 @@
                 <div class="skill-percent">85%</div>
             </div>
             <div class="skill-item" data-percent="80">
-                <span>Beat Making</span>
+                <span>Wasting time</span>
                 <div class="skill-bar" style="width: 0;" data-width="80"></div>
                 <div class="skill-percent">80%</div>
             </div>
@@ -506,19 +452,42 @@
     <section id="hobbies" class="animate">
         <h2>My Jams</h2>
         <p>I stay moving—bikes, cars, courts. Name it, I’m on it.</p>
-        <button class="sort-button" onclick="sortHobbies()">Sort A-Z</button>
-        <div class="widget hobby-grid" id="hobby-grid">
-            <div class="hobby-card" data-name="BMX">
+        <div class="widget hobby-grid">
+            <div class="hobby-card">
                 <p>BMX</p>
             </div>
-            <div class="hobby-card" data-name="Drifting">
+            <div class="hobby-card">
                 <p>Drifting</p>
             </div>
-            <div class="hobby-card" data-name="Parkour">
+            <div class="hobby-card">
                 <p>Parkour</p>
             </div>
-            <div class="hobby-card" data-name="Basketball">
+            <div class="hobby-card">
                 <p>Basketball</p>
+            </div>
+            <div class="hobby-card">
+                <p>Hobby 1</p>
+            </div>
+            <div class="hobby-card">
+                <p>Hobby 2</p>
+            </div>
+            <div class="hobby-card">
+                <p>Hobby 3</p>
+            </div>
+            <div class="hobby-card">
+                <p>Hobby 4</p>
+            </div>
+            <div class="hobby-card">
+                <p>Hobby 5</p>
+            </div>
+            <div class="hobby-card">
+                <p>Hobby 6</p>
+            </div>
+            <div class="hobby-card">
+                <p>Hobby 7</p>
+            </div>
+            <div class="hobby-card">
+                <p>Hobby 8</p>
             </div>
         </div>
     </section>
@@ -528,10 +497,10 @@
         <h2>My Rules</h2>
         <p>I live raw—my code keeps it 100.</p>
         <div class="widget code-list">
-            <p>✮ No Apologies: I’m me, deal with it.</p>
-            <p>✮ Grab It: Want it? Take it.</p>
-            <p>✮ Fuck the Norm: I carve my own way.</p>
-            <p>✮ Real Ones Only: No snakes allowed.</p>
+            <p>No Apologies: I’m me, deal with it.</p>
+            <p>Grab It: Want it? Take it.</p>
+            <p>Fuck the Norm: I carve my own way.</p>
+            <p>Real Ones Only: No snakes allowed.</p>
         </div>
     </section>
 
@@ -565,16 +534,16 @@
         <p>Only the realest ride with me.</p>
         <div class="widget crew-grid">
             <div class="crew-card">
-                <p>Mo - Parkour beast</p>
+                <p>K - The co leader</p>
             </div>
             <div class="crew-card">
-                <p>Ali - Drift god</p>
+                <p>O - a menace in fights</p>
             </div>
             <div class="crew-card">
-                <p>Zizo - Court king</p>
+                <p>T - The guy</p>
             </div>
             <div class="crew-card">
-                <p>Omar - Hype lord</p>
+                <p>X - I take the lead</p>
             </div>
         </div>
     </section>
@@ -585,19 +554,19 @@
         <p>My day ones—respect always.</p>
         <div class="widget mentions-grid">
             <div class="mention-card">
-                <p>Ahmed - Drift king</p>
+                <p>Cinnamon - ilysm <3</p>
             </div>
             <div class="mention-card">
-                <p>Youssef - Game slayer</p>
+                <p>Lidia - :3</p>
             </div>
             <div class="mention-card">
-                <p>Kareem - Pure vibes</p>
+                <p>Alexandros - aka greece cheese</p>
             </div>
             <div class="mention-card">
-                <p>Sami - Parkour goat</p>
+                <p>Meroz - The game dev</p>
             </div>
             <div class="mention-card">
-                <p>Hassan - Beat plug</p>
+                <p>Me - For existing</p>
             </div>
         </div>
     </section>
@@ -607,11 +576,11 @@
         <h2>Link Up</h2>
         <p>Yo, slide in—let’s connect.</p>
         <div class="widget social-links">
-            <a href="https://discord.com" target="_blank"><i class="fab fa-discord"></i></a>
-            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://spotify.com" target="_blank"><i class="fab fa-spotify"></i></a>
-            <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://discord.com" target="_blank" aria-label="Discord"><i class="fab fa-discord"></i></a>
+            <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://spotify.com" target="_blank" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+            <a href="https://github.com" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://youtube.com" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
         </div>
     </section>
 
@@ -623,6 +592,15 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // Intro Overlay
+        const introOverlay = document.getElementById('intro-overlay');
+        introOverlay.addEventListener('click', () => {
+            introOverlay.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+            bgMusic.play().catch(err => console.error('Audio play failed:', err));
+            initBeatDetection();
+        });
+
         // Dark/Light Mode
         const toggle = document.getElementById('mode-toggle');
         toggle.addEventListener('click', () => {
@@ -630,14 +608,36 @@
             toggle.innerHTML = document.body.classList.contains('light-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
         });
 
-        // Music & Hum
+        // Music & Beat Detection
         const bgMusic = document.getElementById('bg-music');
-        const bgHum = document.getElementById('bg-hum');
-        bgMusic.currentTime = 15;
         bgMusic.volume = 0.4;
-        bgHum.volume = 0.1;
-        bgMusic.play();
-        bgHum.play();
+
+        function initBeatDetection() {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const source = audioCtx.createMediaElementSource(bgMusic);
+            const analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            source.connect(analyser);
+            analyser.connect(audioCtx.destination);
+
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function detectBeat() {
+                analyser.getByteFrequencyData(dataArray);
+                let bassSum = 0;
+                for (let i = 0; i < 10; i++) {
+                    bassSum += dataArray[i];
+                }
+                const bassAvg = bassSum / 10;
+                if (bassAvg > 120) {
+                    document.body.classList.add('shake');
+                    setTimeout(() => document.body.classList.remove('shake'), 100);
+                }
+                requestAnimationFrame(detectBeat);
+            }
+            detectBeat();
+        }
 
         // Sound Effects
         const hoverSound = document.getElementById('hover-sound');
@@ -695,28 +695,15 @@
                             setTimeout(() => div.classList.add('visible'), index * 150);
                         });
                     }
+                    if (entry.target.id === 'code') {
+                        document.querySelectorAll('.code-list p').forEach((p, index) => {
+                            setTimeout(() => p.classList.add('visible'), index * 150);
+                        });
+                    }
                 }
             });
         }, { threshold: 0.4 });
         animates.forEach(el => observer.observe(el));
-
-        // Sort Skills
-        function sortSkills() {
-            const grid = document.getElementById('skills-grid');
-            const items = Array.from(grid.querySelectorAll('.skill-item'));
-            items.sort((a, b) => b.dataset.percent - a.dataset.percent);
-            grid.innerHTML = '';
-            items.forEach(item => grid.appendChild(item));
-        }
-
-        // Sort Hobbies
-        function sortHobbies() {
-            const grid = document.getElementById('hobby-grid');
-            const items = Array.from(grid.querySelectorAll('.hobby-card'));
-            items.sort((a, b) => a.dataset.name.localeCompare(b.dataset.name));
-            grid.innerHTML = '';
-            items.forEach(item => grid.appendChild(item));
-        }
 
         // Mood Setter
         function setMood(mood) {
